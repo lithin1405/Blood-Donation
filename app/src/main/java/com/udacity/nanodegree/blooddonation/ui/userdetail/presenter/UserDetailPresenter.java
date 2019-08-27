@@ -10,6 +10,8 @@ import com.udacity.nanodegree.blooddonation.ui.userdetail.UserDetailContract;
 import com.udacity.nanodegree.blooddonation.ui.userdetail.model.UserDetail;
 import com.udacity.nanodegree.blooddonation.util.Util;
 
+import java.util.Objects;
+
 /**
  * Created by riteshksingh on Apr, 2018
  */
@@ -50,7 +52,7 @@ public class UserDetailPresenter implements UserDetailContract.Presenter {
         User user = Util.getPreparedUser(userDetail);
         int isValid = Util.isValidUser(user);
         if (isValid == 0) {
-            mDataRepo.saveNewUser(mFirebaseAuth.getCurrentUser().getUid(),
+            mDataRepo.saveNewUser(Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid(),
                     user);
             mSharedPreferenceManager.put(SharedPrefConstants.IS_USER_DETAILS_ENTERED, true);
             mSharedPreferenceManager.put(SharedPrefConstants.USER_DETAILS, new Gson().toJson(user));

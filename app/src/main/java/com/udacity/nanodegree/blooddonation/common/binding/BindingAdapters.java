@@ -44,7 +44,7 @@ public class BindingAdapters {
       view.setOnCheckedChangeListener(
           (group, checkedId) -> bindableBoolean.set(checkedId == group.getChildAt(0).getId()));
     }
-    Boolean newValue = bindableBoolean.get();
+    boolean newValue = bindableBoolean.get();
     ((RadioButton) view.getChildAt(newValue ? 0 : 1)).setChecked(true);
   }
 

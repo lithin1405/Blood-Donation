@@ -21,6 +21,8 @@ import com.udacity.nanodegree.blooddonation.ui.userdetail.model.UserDetail;
 import com.udacity.nanodegree.blooddonation.ui.userdetail.presenter.UserDetailPresenter;
 import com.udacity.nanodegree.blooddonation.util.location.LocationUtil;
 
+import java.util.Objects;
+
 
 /**
  * Created by riteshksingh on Apr, 2018
@@ -58,7 +60,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
             mActivityUserDetailsBinding.etLastName.requestFocus();
             return true;
         });
-        getSupportActionBar().setTitle(R.string.user_profile);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.user_profile);
         initSpinner();
 
 

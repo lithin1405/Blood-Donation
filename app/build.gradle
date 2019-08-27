@@ -103,6 +103,8 @@ dependencies {
     androidTestImplementation deps.android.support.test.runner
     androidTestImplementation deps.android.support.test.espressoCore
 
+    implementation 'com.google.firebase:firebase-analytics:15.0.1'
+
 }
 
 

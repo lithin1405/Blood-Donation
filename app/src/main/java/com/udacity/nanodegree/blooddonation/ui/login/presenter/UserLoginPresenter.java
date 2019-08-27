@@ -21,6 +21,7 @@ import com.udacity.nanodegree.blooddonation.util.Util;
 import timber.log.Timber;
 
 import java.lang.ref.WeakReference;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -130,7 +131,7 @@ public class UserLoginPresenter implements UserLoginContract.Presenter {
   private void fetchUser() {
     DatabaseReference userDetailDbReference = mFirebaseDatabase.getReference()
         .child(FireBaseConstants.USERS)
-        .child(mFireBaseAuth.getUid());
+        .child(Objects.requireNonNull(mFireBaseAuth.getUid()));
 
     userDetailDbReference.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
@@ -166,17 +167,15 @@ public class UserLoginPresenter implements UserLoginContract.Presenter {
 
   private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
     mFireBaseAuth.signInWithCredential(credential)
-        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-          @Override public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-              fetchUser();
+        .addOnCompleteListener(task -> {
+          if (task.isSuccessful()) {
+            fetchUser();
+          } else {
+            mView.get().setVerifyProgressVisibility(false);
+            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+              mView.get().generalResponse(R.string.msg_invalid_verification_code);
             } else {
-              mView.get().setVerifyProgressVisibility(false);
-              if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                mView.get().generalResponse(R.string.msg_invalid_verification_code);
-              } else {
-                mView.get().generalResponse(R.string.msg_encountered_an_unexpected_error);
-              }
+              mView.get().generalResponse(R.string.msg_encountered_an_unexpected_error);
             }
           }
         });
